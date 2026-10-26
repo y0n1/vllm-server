@@ -1,0 +1,16 @@
+[Unit]
+Description=vLLM via Docker Compose
+
+[Service]
+Type=simple
+EnvironmentFile=%h/Projects/vllm-server/etc/%i.conf
+WorkingDirectory=%h/Projects/vllm-server
+
+# Stop any existing containers running under this compose project name first
+ExecStartPre=-/usr/bin/docker compose -f "${MODEL}/compose.yaml" --project-name 'vllm-server' down
+
+ExecStart=/usr/bin/docker compose -f "${MODEL}/compose.yaml" --project-name 'vllm-server' up
+ExecStop=/usr/bin/docker compose -f "${MODEL}/compose.yaml" --project-name 'vllm-server' down
+
+[Install]
+WantedBy=default.target

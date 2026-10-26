@@ -14,6 +14,13 @@ services:
     security_opt:
       - seccomp=unconfined
       - apparmor=unconfined
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
     environment:
       - HF_TOKEN=${HF_TOKEN}
       - VLLM_PLE_TABLE_MEMORY=disk
@@ -37,13 +44,6 @@ services:
       - vllm-huggingface:/root/.cache/huggingface
       - vllm-triton:/root/.triton
       - ${PWD}/nvidia/Qwen3.8-Flash-Next-FP4-Local/config.yaml:/workspace/vllm/config.yaml:ro
-    deploy:
-      resources:
-        reservations:
-          devices:
-            - driver: nvidia
-              count: all
-              capabilities: [gpu]
     command: vllm serve --config config.yaml
 volumes:
   vllm-b12x:

@@ -1,16 +1,4 @@
-services:
-  init-volumes:
-    image: vllm/vllm-openai:latest
-    user: "0:0"
-    volumes:
-      - vllm-cache:/cache/vllm
-      - vllm-flashinfer:/cache/flashinfer
-      - vllm-huggingface:/cache/huggingface
-      - vllm-triton:/triton
-    entrypoint: ["/bin/sh", "-c"]
-    command: ["chown -R 2000:0 /cache && chown -R 2000:0 /triton"]
-    restart: "no"
-    
+services:    
   vllm:
     image: eugr/spark-vllm:nightly-20261016
     container_name: vllm-NVIDIA-Nemotron-3.5-Bolt-74B-A9B-24GB
@@ -23,13 +11,6 @@ services:
         soft: -1
         hard: -1
       stack: 67108864
-    environment:
-      - HF_TOKEN=${HF_TOKEN}
-    volumes:
-      - vllm-huggingface:/root/.cache/huggingface
-      - vllm-cache:/root/.cache/vllm
-      - vllm-flashinfer:/root/.cache/flashinfer
-      - vllm-triton:/root/.triton
     deploy:
       resources:
         reservations:
@@ -37,7 +18,15 @@ services:
             - driver: nvidia
               count: all
               capabilities: [gpu]
-    command: vllm serve --config config.yaml
+    environment:
+      - HF_TOKEN=${HF_TOKEN}
+      - ${PWD}/nvidia/NVIDIA-Nemotron-3.5-Bolt-74B-A9B-24GB/config.yaml:/workspace/vllm/config.yaml:ro
+    volumes:
+      - vllm-huggingface:/root/.cache/huggingface
+      - vllm-cache:/root/.cache/vllm
+      - vllm-flashinfer:/root/.cache/flashinfer
+      - vllm-triton:/root/.triton
+    command: --config config.yaml
 volumes:
   vllm-huggingface:
   vllm-cache:

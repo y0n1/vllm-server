@@ -11,11 +11,6 @@ services:
         soft: -1
         hard: -1
       stack: 67108864
-    environment:
-      - HF_TOKEN=${HF_TOKEN}
-    volumes:
-      - vllm-huggingface:/root/.cache/huggingface
-      - ${PWD}/nvidia/Qwen3.8-Flash-Next-FP4-Local/config.yaml:/workspace/vllm/config.yaml:ro
     deploy:
       resources:
         reservations:
@@ -23,6 +18,11 @@ services:
             - driver: nvidia
               count: all
               capabilities: [gpu]
-    command: vllm serve --config config.yaml
+    environment:
+      - HF_TOKEN=${HF_TOKEN}
+    volumes:
+      - vllm-huggingface:/root/.cache/huggingface
+      - ${PWD}/nvidia/Qwen3.8-Flash-Next-FP4-Local/config.yaml:/workspace/vllm/config.yaml:ro
+    command: --config config.yaml
 volumes:
   vllm-huggingface:

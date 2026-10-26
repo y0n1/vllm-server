@@ -27,6 +27,13 @@ services:
         soft: -1
         hard: -1
       stack: 67108864
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
     environment:
       - HF_TOKEN=${HF_TOKEN}
       - VLLM_USE_V2_MODEL_RUNNER=1
@@ -38,13 +45,6 @@ services:
       - ${PWD}/nvidia/NVIDIA-Nemotron-3.5-Bolt-74B-A9B-24GB/vision/ultra_v3_reasoning_parser.py:/home/vllm/recipe/ultra_v3_reasoning_parser.py:ro
       - ${PWD}/nvidia/NVIDIA-Nemotron-3.5-Bolt-74B-A9B-24GB/vision/config.vision.yaml:/home/vllm/recipe/config.vision.yaml:ro
       - ${PWD}/nvidia/NVIDIA-Nemotron-3.5-Bolt-74B-A9B-24GB/vision/entrypoint.sh:/home/vllm/entrypoint.sh:ro
-    deploy:
-      resources:
-        reservations:
-          devices:
-            - driver: nvidia
-              count: all
-              capabilities: [gpu]
     entrypoint: ["/home/vllm/entrypoint.sh"]
 volumes:
   vllm-huggingface:
