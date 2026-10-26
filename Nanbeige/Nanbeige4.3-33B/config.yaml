@@ -1,0 +1,6 @@
+model: Nanbeige/Nanbeige4.3-33B
+tensor-parallel-size: 4
+gpu-memory-utilization: 0.8
+enable-auto-tool-choice: true
+reasoning-parser: qwen3
+tool-call-parser: qwen3_coder
