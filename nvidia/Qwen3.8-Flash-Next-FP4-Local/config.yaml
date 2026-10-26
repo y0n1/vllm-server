@@ -1,0 +1,29 @@
+model: nvidia/Qwen3.8-Flash-Next-FP4-Local
+tensor-parallel-size: 1
+pipeline-parallel-size: 1
+mamba-cache-mode: align
+enable-prefix-caching: true
+enable-chunked-prefill: true
+dtype: bfloat16
+kv-cache-dtype: fp8
+quantization: modelopt_mixed
+block-size: 16
+load-format: b12x
+max-model-len: 262144
+max-num-seqs: 8
+max-num-batched-tokens: 4096
+speculative-config:
+  method: "mtp"
+  num_speculative_tokens: 4
+gdn-decode-kernel: b12x
+linear-backend: b12x
+moe-backend: b12x
+no-enable-flashinfer-autotune: true
+mm-encoder-tp-mode: data
+reasoning-parser: qwen3
+tool-call-parser: qwen3_xml
+enable-auto-tool-choice: true
+compilation-config:
+  pass_config:
+    fuse_act_quant: true
+gpu-memory-utilization: 0.8

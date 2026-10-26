@@ -1,0 +1,21 @@
+model: nvidia/Qwen3.6-35B-A3B-NVFP4
+tensor-parallel-size: 1
+trust-remote-code: true
+kv-cache-dtype: fp8
+attention-backend: flashinfer
+moe-backend: marlin
+gpu-memory-utilization: 0.8
+max-model-len: 262144
+max-num-seqs: 8
+max-num-batched-tokens: 8192
+enable-chunked-prefill: true
+async-scheduling: true
+enable-prefix-caching: true
+speculative-config:
+  method: mtp
+  num_speculative_tokens: 4
+  moe_backend: triton
+load-format: safetensors
+reasoning-parser: qwen3
+tool-call-parser: qwen3_xml
+enable-auto-tool-choice: true

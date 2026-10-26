@@ -1,0 +1,28 @@
+services:    
+  vllm:
+    image: nvcr.io/nvidia/vllm:26.10.pre1-py3
+    container_name: vllm-nvidia-Qwen3.8-Flash-Next-FP4-Local
+    restart: unless-stopped
+    ipc: host
+    network_mode: host
+    shm_size: '16gb'
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+      stack: 67108864
+    environment:
+      - HF_TOKEN=${HF_TOKEN}
+    volumes:
+      - vllm-huggingface:/root/.cache/huggingface
+      - ${PWD}/nvidia/Qwen3.8-Flash-Next-FP4-Local/config.yaml:/workspace/vllm/config.yaml:ro
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+    command: vllm serve --config config.yaml
+volumes:
+  vllm-huggingface:
