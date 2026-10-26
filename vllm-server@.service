@@ -4,6 +4,7 @@ Description=vLLM via Docker Compose
 [Service]
 Type=simple
 EnvironmentFile=%h/Projects/vllm-server/etc/%i.conf
+Environment="PWD=%h/Projects/vllm-server"
 WorkingDirectory=%h/Projects/vllm-server
 
 # Stop any existing containers running under this compose project name first
