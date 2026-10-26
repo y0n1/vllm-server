@@ -1,4 +1,16 @@
 services:
+  init-volumes:
+    image: vllm/vllm-openai:latest
+    user: "0:0"
+    volumes:
+      - vllm-cache:/cache/vllm
+      - vllm-flashinfer:/cache/flashinfer
+      - vllm-huggingface:/cache/huggingface
+      - vllm-triton:/triton
+    entrypoint: ["/bin/sh", "-c"]
+    command: ["chown -R 2000:0 /cache && chown -R 2000:0 /triton"]
+    restart: "no"
+    
   vllm:
     image: eugr/spark-vllm:nightly-20261016
     container_name: vllm-NVIDIA-Nemotron-3.5-Bolt-74B-A9B-24GB
@@ -14,10 +26,10 @@ services:
     environment:
       - HF_TOKEN=${HF_TOKEN}
     volumes:
-      - ${HOME}/.cache/huggingface:/root/.cache/huggingface
-      - ${HOME}/.cache/vllm:/root/.cache/vllm
-      - ${HOME}/.cache/flashinfer:/root/.cache/flashinfer
-      - ${HOME}/.triton:/root/.triton
+      - vllm-huggingface:/root/.cache/huggingface
+      - vllm-cache:/root/.cache/vllm
+      - vllm-flashinfer:/root/.cache/flashinfer
+      - vllm-triton:/root/.triton
     deploy:
       resources:
         reservations:
@@ -25,21 +37,9 @@ services:
             - driver: nvidia
               count: all
               capabilities: [gpu]
-    command: >
-      vllm serve nvidia/NVIDIA-Nemotron-3.5-Bolt-74B-A9B-24GB
-      --kv-cache-dtype fp8
-      --max-num-seqs 8
-      --trust-remote-code
-      --max-model-len auto
-      --gpu-memory-utilization 0.8
-      --max-num-batched-tokens 4096
-      --speculative_config.model nvidia/NVIDIA-Nemotron-3.5-Bolt-74B-A9B-24GB-LiLiCorr
-      --speculative_config.method dflash
-      --speculative_config.num_speculative_tokens 7
-      --load-format instanttensor
-      --enable-auto-tool-choice
-      --tool-call-parser qwen3_coder
-      --reasoning-parser nemotron_v3
-      --enable-mamba-shared-prefix-checkpoint
-      --block-size 64
-      --prefix-match-unit 64
+    command: vllm serve --config config.yaml
+volumes:
+  vllm-huggingface:
+  vllm-cache:
+  vllm-flashinfer:
+  vllm-triton:

@@ -1,0 +1,26 @@
+# Generated from vLLM Recipes JSON.
+# Source: https://recipes.vllm.ai/nvidia/NVIDIA-Nemotron-3.5-Super-VL-120B-A12B-NVFP4/hw/dgx_spark_gb10.json
+# hardware: dgx_spark_gb10
+# strategy: single_node_tp
+# variant: default
+# deploy_type: single_node
+model: nvidia/NVIDIA-Nemotron-3.5-Super-VL-120B-A12B-NVFP4
+trust-remote-code: true
+max-num-seqs: 2
+max-model-len: 114688
+gpu-memory-utilization: 0.7
+mamba-backend: flashinfer
+mamba-ssm-cache-dtype: float16
+enable-mamba-cache-stochastic-rounding: true
+mamba-cache-philox-rounds: 5
+prefix-match-unit: 16
+enable-mamba-shared-prefix-checkpoint: true
+tensor-parallel-size: 1
+speculative-config:
+  method: mtp
+  num_speculative_tokens: 5
+mamba-cache-mode: align
+chat-template-content-format: string
+enable-auto-tool-choice: true
+tool-call-parser: qwen3_coder
+reasoning-parser: nemotron_v3

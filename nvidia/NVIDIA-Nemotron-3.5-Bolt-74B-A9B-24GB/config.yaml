@@ -1,0 +1,17 @@
+block-size: 64
+enable-auto-tool-choice: true
+enable-mamba-shared-prefix-checkpoint: true
+gpu-memory-utilization: 0.8
+kv-cache-dtype: fp8
+load-format: instanttensor
+max-model-len: auto
+max-num-batched-tokens: 4096
+max-num-seqs: 8
+model: nvidia/NVIDIA-Nemotron-3.5-Bolt-74B-A9B-24GB
+prefix-match-unit: 64
+reasoning-parser: nemotron_v3
+speculative_config.method: dflash
+speculative_config.model: nvidia/NVIDIA-Nemotron-3.5-Bolt-74B-A9B-24GB-LiLiCorr
+speculative_config.num_speculative_tokens: 7
+tool-call-parser: qwen3_coder
+trust-remote-code: true

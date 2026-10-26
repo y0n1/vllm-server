@@ -1,0 +1,44 @@
+services:
+  init-volumes:
+    image: vllm/vllm-openai:latest
+    user: "0:0"
+    volumes:
+      - vllm-cache:/cache/vllm
+      - vllm-flashinfer:/cache/flashinfer
+      - vllm-huggingface:/cache/huggingface
+      - vllm-triton:/triton
+    entrypoint: ["/bin/sh", "-c"]
+    command: ["chown -R 2000:0 /cache && chown -R 2000:0 /triton"]
+    restart: "no"
+
+  vllm:
+    depends_on:
+      init-volumes:
+        condition: service_completed_successfully
+    image: vllm/vllm-openai:latest
+    container_name: vllm-NVIDIA-Nemotron-3.5-Super-VL-120B-A12B-NVFP4
+    # restart: unless-stopped
+    ipc: host
+    user: '2000:0'
+    working_dir: /home/vllm
+    environment:
+      - HF_TOKEN=${HF_TOKEN}
+    volumes:
+      - vllm-cache:/home/vllm/.cache/vllm
+      - vllm-flashinfer:/home/vllm/.cache/flashinfer
+      - vllm-huggingface:/home/vllm/.cache/huggingface
+      - vllm-triton:/home/vllm/.triton
+      - ${PWD}/config.yml:/home/vllm/recipe/config.yml:ro
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+    command: '--config ./recipe/config.yml'
+volumes:
+  vllm-huggingface:
+  vllm-cache:
+  vllm-flashinfer:
+  vllm-triton:
