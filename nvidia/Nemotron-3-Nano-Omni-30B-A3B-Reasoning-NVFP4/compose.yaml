@@ -26,7 +26,7 @@ services:
       - vllm-cache:/root/.cache/vllm
       - vllm-flashinfer:/root/.cache/flashinfer
       - vllm-triton:/root/.triton
-    command: --config config.yaml
+    command: vllm serve--config config.yaml
 volumes:
   vllm-huggingface:
   vllm-cache:

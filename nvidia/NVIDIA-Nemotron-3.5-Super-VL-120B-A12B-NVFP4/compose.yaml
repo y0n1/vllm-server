@@ -21,7 +21,7 @@ services:
       - vllm-flashinfer:/home/vllm/.cache/flashinfer
       - vllm-triton:/home/vllm/.triton
       - ${PWD}/nvidia/NVIDIA-Nemotron-3.5-Super-VL-120B-A12B-NVFP4/config.yaml:/workspace/vllm/config.yaml:ro
-    command: --config config.yaml
+    command: vllm serve--config config.yaml
 volumes:
   vllm-huggingface:
   vllm-cache:

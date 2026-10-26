@@ -23,6 +23,6 @@ services:
     volumes:
       - vllm-huggingface:/root/.cache/huggingface
       - ${PWD}/nvidia/Qwen3.8-Flash-Next-FP4-Local/config.yaml:/workspace/vllm/config.yaml:ro
-    command: --config config.yaml
+    command: vllm serve--config config.yaml
 volumes:
   vllm-huggingface:
