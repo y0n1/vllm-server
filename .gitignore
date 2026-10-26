@@ -1,0 +1,53 @@
+# Python caches and test/tool output
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.tox/
+.nox/
+.coverage
+.coverage.*
+htmlcov/
+
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+
+# Packaging/build artifacts
+build/
+dist/
+*.egg-info/
+pip-wheel-metadata/
+
+# Environment files (keep example templates)
+.env
+.env.*
+!.env.example
+!.env.sample
+
+# Logs and transient runtime files
+*.log
+logs/
+*.pid
+*.sock
+tmp/
+temp/
+
+# Downloaded model weights and generated data
+models/
+checkpoints/
+outputs/
+*.safetensors
+*.ckpt
+*.pt
+*.pth
+
+# Jupyter and editor/OS files
+.ipynb_checkpoints/
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
