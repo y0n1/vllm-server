@@ -20,7 +20,7 @@ services:
               capabilities: [gpu]
     environment:
       - HF_TOKEN=${HF_TOKEN}
-      - ${PWD}/nvidia/NVIDIA-Nemotron-3.5-Bolt-74B-A9B-24GB/config.yaml:/workspace/vllm/config.yaml:ro
+      - ${PWD}/nvidia/Nemotron-3-Nano-Omni-30B-A3B-Reasoning-NVFP4/config.yaml:/workspace/vllm/config.yaml:ro
     volumes:
       - vllm-huggingface:/root/.cache/huggingface
       - vllm-cache:/root/.cache/vllm
